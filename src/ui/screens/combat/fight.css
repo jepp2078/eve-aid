@@ -1,0 +1,767 @@
+/* The fighting part of the Combat tab (Task 15b): retreat prompt, attack card and target chips, roll instruction,
+   live tally, the dice pad, results, overflow, re-align, the end and the combat tools. Tokens only; see theme.css. */
+
+/* ---------- Header ---------- */
+
+.cb-head-actions {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.cb-more {
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-2);
+}
+
+/* ---------- Reminders ---------- */
+
+.cb-reminders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.cb-reminders-title {
+  font-size: var(--fs-body);
+}
+.cb-reminder {
+  font-size: var(--fs-sm);
+}
+.cb-reminder .card-text p + p {
+  margin-top: var(--sp-1);
+}
+.cb-reminder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* The verdict above an attack's primary button. */
+.cb-verdict-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  font-weight: 700;
+}
+.cb-verdict-line .icon {
+  flex: none;
+  margin-top: 0.1em;
+  color: var(--text-2);
+}
+.cb-verdict-line.is-hit .icon {
+  color: var(--ok);
+}
+.cb-verdict-line.is-kill .icon {
+  color: var(--danger);
+}
+
+/* The reminders strip: chips by source, one unfolded. */
+.cb-strip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.cb-strip-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.cb-strip-label .icon {
+  color: var(--accent);
+}
+
+/* The newest attack and its overflow strikes. */
+.cb-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* ---------- Retreat ---------- */
+
+.cb-standing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+}
+.cb-standing li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: var(--sp-2);
+  border-left: 3px solid var(--f);
+}
+.cb-standing-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--f-text);
+  font-weight: 700;
+}
+
+/* ---------- Results ---------- */
+
+.cb-result-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+  color: var(--text-1);
+  font-size: var(--fs-sm);
+  text-align: left;
+}
+.cb-result-line > .icon {
+  flex: none;
+  color: var(--text-2);
+}
+.cb-result-line-text {
+  min-width: 0;
+}
+.cb-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.cb-result-title {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.cb-result-fold {
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: 0;
+}
+.cb-result-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em;
+}
+.cb-result-faction {
+  color: var(--f-text);
+  font-weight: 700;
+}
+.cb-verdict {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  font-size: var(--fs-section);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+.cb-verdict .icon {
+  flex: none;
+  margin-top: 0.05em;
+}
+.cb-result.is-miss .cb-verdict .icon,
+.cb-result.is-blocked .cb-verdict .icon {
+  color: var(--text-2);
+}
+.cb-result.is-hit .cb-verdict .icon {
+  color: var(--ok);
+}
+.cb-result.is-kill {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
+}
+.cb-result.is-kill .cb-verdict .icon {
+  color: var(--danger);
+}
+
+/* ---------- Attack card ---------- */
+
+.cb-attack-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.cb-skip {
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-3);
+  border-color: var(--line-strong);
+  font-size: var(--fs-sm);
+}
+.cb-sub-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.cb-sub-head .btn {
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-2);
+  font-size: var(--fs-sm);
+}
+.cb-attack h3 {
+  font-size: var(--fs-title);
+}
+
+/* Target chips: the whole chip picks; ⓘ keeps its corner. */
+.cb-targets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .cb-targets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    align-items: start;
+  }
+}
+.cb-target {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--f);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+}
+.cb-target.is-selected {
+  border-color: var(--accent);
+  border-left-color: var(--f);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.cb-target.is-blocked {
+  border-color: var(--line);
+  border-left-color: var(--f);
+  background: var(--bg-1);
+}
+.cb-target-btn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) calc(var(--tap-min) + var(--sp-2)) var(--sp-2) var(--sp-3);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--text-1);
+  text-align: left;
+}
+.cb-target-btn:hover:not(:disabled) {
+  background: var(--bg-3);
+}
+.cb-target-btn:disabled {
+  cursor: not-allowed;
+}
+.cb-target-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+}
+.cb-target-name {
+  font-weight: 700;
+}
+.cb-target.is-blocked .cb-target-name {
+  color: var(--text-2);
+}
+.cb-target-meta {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-target-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-sm);
+}
+.cb-target-stats strong {
+  font-size: var(--fs-body);
+}
+.cb-target-reason,
+.cb-target-outcome {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-target-reason .icon,
+.cb-target-outcome .icon {
+  flex: none;
+  margin-top: 0.2em;
+}
+.cb-target-outcome {
+  color: var(--text-1);
+  font-weight: 700;
+}
+.cb-target-info {
+  position: absolute;
+  top: var(--sp-1);
+  right: var(--sp-1);
+  width: var(--tap-min);
+  height: var(--tap-min);
+  color: var(--accent);
+}
+.cb-target-info[aria-expanded='true'] {
+  background: var(--accent-dim);
+}
+.cb-target-why {
+  margin: 0 var(--sp-2) var(--sp-2);
+}
+
+/* Roll instruction: the dice to pick up, then the words. */
+.cb-roll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.cb-roll-dice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.cb-die-choice {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 0.3rem;
+  background: linear-gradient(135deg, var(--die-white) 50%, var(--die-black) 50%);
+}
+.cb-roll-words {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+}
+.cb-roll-words .cb-pool {
+  margin-left: 0;
+}
+
+/* Live tally, pinned right above the pad. */
+.cb-tally {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+}
+.cb-tally-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  font-weight: 600;
+}
+.cb-tally-line > .icon {
+  color: var(--text-2);
+}
+.cb-tally-carry {
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+.cb-tally-carry > .icon {
+  flex: none;
+  margin-top: 0.2em;
+}
+.cb-effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  list-style: none;
+}
+.cb-effect {
+  min-height: 2rem;
+  padding: 0 var(--sp-2);
+  border-color: var(--accent);
+  white-space: normal;
+}
+
+/* Adjusters, folded away. */
+.cb-adjust {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+}
+.cb-adjust summary {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.cb-adjust summary::-webkit-details-marker {
+  display: none;
+}
+.cb-adjust summary .icon {
+  color: var(--accent);
+}
+.cb-adjust-body {
+  padding: 0 var(--sp-3) var(--sp-3);
+}
+
+/* ---------- Dice pad ---------- */
+
+.pad {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.pad-meter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.pad-meter-text {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.pad-meter-text .icon {
+  color: var(--accent);
+}
+.pad-extra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.pad-extra-item {
+  display: inline-flex;
+  gap: 2px;
+}
+.pad-extra-btn,
+.pad-extra-minus {
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-2);
+  font-size: var(--fs-sm);
+}
+.pad-extra-minus {
+  min-width: var(--tap-min);
+}
+.pad-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.pad-group-title {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+/*
+ * Three faces a row while each can be at least 84 px wide (the 44 px "−" and the count badge side by side); in a
+ * narrower box (a larger root font at 360 px, or under 360 px) it falls back to two a row instead of overflowing.
+ * The column minimum is the larger of 84 px and a third of the row, so auto-fill makes exactly three columns when
+ * they fit (the 0.1 px keeps rounding from dropping the third).
+ */
+.pad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(84px, calc((100% - 2 * var(--sp-2)) / 3 - 0.1px)), 1fr));
+  gap: var(--sp-2);
+}
+@media (min-width: 900px) {
+  .pad-grid {
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  }
+}
+.pad-face {
+  position: relative;
+  min-width: 0;
+}
+/* The face as the physical die: white faces on light tiles, black faces on dark tiles with a light border. */
+.pad-face-btn,
+.pad-face-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 4.75rem;
+  padding: var(--sp-2) var(--sp-1);
+  border: 2px solid transparent;
+  border-radius: var(--r-lg);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.pad-face.is-white .pad-face-btn,
+.pad-face.is-white .pad-face-body {
+  background: var(--die-white);
+  color: var(--die-white-ink);
+}
+.pad-face.is-black .pad-face-btn,
+.pad-face.is-black .pad-face-body {
+  border-color: var(--line-strong);
+  background: var(--die-black);
+  color: var(--die-black-ink);
+}
+.pad-face-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.pad-face.has-count .pad-face-btn {
+  box-shadow: 0 0 0 3px var(--accent);
+}
+.pad-face.is-strip .pad-face-btn {
+  box-shadow: 0 0 0 3px var(--warn);
+}
+/* The pool is full: faces not entered fade; entered ones stay clear (their "−" still works). */
+.pad-face:not(.has-count) .pad-face-btn[aria-disabled='true'] {
+  opacity: 0.55;
+}
+.pad-face-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pad-face-label {
+  overflow-wrap: anywhere;
+}
+.pad-count {
+  position: absolute;
+  top: var(--sp-1);
+  right: var(--sp-1);
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.3em;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--bg-0);
+  font-size: var(--fs-body);
+  font-weight: 800;
+  line-height: 1.75rem;
+}
+/* "−" beside the badge: a 44 px target in the tile's top-left corner. */
+.pad-minus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  padding: var(--sp-1);
+  border: 0;
+  background: transparent;
+}
+.pad-minus .icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0.3rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--text-1);
+}
+.pad-face-body {
+  min-height: 3.5rem;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  cursor: text;
+}
+.pad-face-input {
+  width: 100%;
+  min-height: var(--tap);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  text-align: center;
+}
+.pad-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.pad-tools .btn {
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-2);
+  font-size: var(--fs-sm);
+}
+.pad-strip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border: 1px solid var(--warn);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+}
+.pad-strip-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 600;
+}
+.pad-strip-head span {
+  flex: 1;
+}
+.pad-strip-head .icon-btn {
+  width: var(--tap-min);
+  height: var(--tap-min);
+}
+.pad-strip-nums {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(var(--tap-min), 1fr));
+  gap: var(--sp-1);
+}
+.pad-strip-n {
+  min-height: var(--tap-min);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--bg-1);
+  color: var(--text-1);
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+.pad-strip-n[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.pad-strip-n:disabled {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+/* ---------- Overflow ---------- */
+
+.cb-overflow .house-badge {
+  align-self: flex-start;
+}
+.cb-overflow-carry strong {
+  font-size: var(--fs-title);
+}
+
+/* ---------- Re-align ---------- */
+
+.cb-realign-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  list-style: none;
+}
+.cb-realign-slots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding-left: var(--sp-3);
+  border-left: 2px solid var(--accent);
+}
+
+/* ---------- The end ---------- */
+
+.cb-winner {
+  border-color: var(--f);
+  box-shadow: inset 4px 0 0 var(--f);
+}
+.cb-winner-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--f-text);
+  font-size: var(--fs-counter);
+}
+.cb-winner-why {
+  font-size: var(--fs-title);
+  font-weight: 600;
+}
+.cb-strength {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  list-style: none;
+}
+.cb-strength li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: var(--sp-2);
+  border-left: 3px solid var(--f);
+}
+.cb-strength-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.cb-strength-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--f-text);
+  font-weight: 700;
+}
+.cb-strength-total {
+  font-size: var(--fs-counter);
+  font-weight: 800;
+}
+.cb-rewards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding-left: var(--sp-2);
+  border-left: 3px solid var(--f);
+}
+.cb-rewards ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  list-style: none;
+}
+.cb-rewards-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--f-text);
+  font-size: var(--fs-body);
+}
+.cb-reward {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+}
+.cb-reward > svg {
+  flex: none;
+  margin-top: 0.05em;
+}
+
+/* ---------- Combat tools ---------- */
+
+.cb-tools-side {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--f-text);
+  font-size: var(--fs-body);
+}
+.cb-tools-ship-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+}
+.cb-tools-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+.cb-tools-kill {
+  grid-column: 1 / -1;
+}

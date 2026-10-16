@@ -1,0 +1,27 @@
+// The cloud host (Cloudflare Workers, free plan): `npm run cloud:dev` locally, `npm run cloud:deploy` to publish.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eve-companion",
+  // The Worker is bundled by Vite first (the engine's data uses Vite's `?raw` imports): worker/index.ts → dist-worker/.
+  "main": "dist-worker/index.js",
+  "build": { "command": "npm run cloud:build", "watch_dir": ["worker", "server", "src"] },
+  "compatibility_date": "2026-09-28",
+  // node:crypto for the device uid hash (server/protocol.ts), the same on both hosts.
+  "compatibility_flags": ["nodejs_compat"],
+  // The built client (`vite build --mode cloud`, see `npm run cloud:build`). Only /api/* reaches the Worker; every other path is a file, or
+  // index.html for the app's own routes.
+  "assets": {
+    "directory": "./dist-cloud",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  // One Durable Object per game, named by its code. The free plan only offers SQLite-backed ones.
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "GameRoom" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["GameRoom"] }],
+  // New games per client address: 10 a minute (per Cloudflare location).
+  "ratelimits": [{ "name": "CREATE_LIMIT", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }],
+  "observability": { "enabled": true }
+}

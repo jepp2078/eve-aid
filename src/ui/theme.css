@@ -1,0 +1,550 @@
+/*
+ * Design tokens and base styles (dark only). Near-black blue surfaces, off-white
+ * text, hairline borders, faction colour for identity only, a neutral/cyan accent for interaction, semantic
+ * colours always paired with an icon and a word.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: elevation = lighter, not shadow */
+  --bg-0: #07090d;
+  --bg-1: #0e131b;
+  --bg-2: #151c27;
+  --bg-3: #1e2836;
+  --line: #2a3646;
+  --line-strong: #3b4b61;
+
+  /* Text */
+  --text-1: #e4eaf2;
+  --text-2: #a9b6c6;
+  --text-3: #75849a;
+
+  /* Interaction and semantics */
+  --accent: #56c2e6;
+  --accent-dim: #10303d;
+  --primary-fill: #dde7f0;
+  --on-primary: #07090d;
+  --danger: #ff5a6e;
+  --danger-dim: #3d1720;
+  --ok: #6bd49a;
+  --ok-dim: #12301f;
+  --warn: #ffb547;
+  --warn-dim: #3a2a10;
+  /* House rule interpretations: a distinct, non-semantic hue (always with the balance icon and words) */
+  --house: #c9b3ff;
+  --house-dim: #261d40;
+
+  /* Factions: base (stripes, glyphs), text tint (names on dark), dim fill (rows, tiles) */
+  --amarr: #e0b34a;
+  --amarr-text: #f2d48a;
+  --amarr-dim: #3a2e12;
+  --caldari: #4f8fe8;
+  --caldari-text: #9cc2ff;
+  --caldari-dim: #13233d;
+  --gallente: #3dbb7e;
+  --gallente-text: #8fe0b5;
+  --gallente-dim: #10301f;
+  --minmatar: #e0603f;
+  --minmatar-text: #ff9e85;
+  --minmatar-dim: #3a1810;
+
+  /* Minerals (the physical card colours) and materials */
+  --pyrite: #e9c74a;
+  --mexallon: #58c773;
+  --tritanium: #a9b4c1;
+  --morphite: #ef5b4f;
+  --planetary: #7fb4e8;
+  --moon: #c9d2dc;
+  --component: #56c2e6;
+
+  /* Dice tiles */
+  --die-white: #e9eef4;
+  --die-white-ink: #0a0d12;
+  --die-black: #0a0d12;
+  --die-black-ink: #e4eaf2;
+
+  /* QR code: dark modules on a light tile with a quiet zone, whatever the theme */
+  --qr-light: #f2f5f8;
+  --qr-dark: #07090d;
+
+  /* Type: system fonts only (laptop mode may be offline) */
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --fs-meta: 0.75rem; /* 12: meta only, never essential */
+  --fs-sm: 0.875rem; /* 14: secondary */
+  --fs-body: 1rem; /* 16: body, inputs */
+  --fs-title: 1.125rem; /* 18: list titles */
+  --fs-section: 1.375rem; /* 22: section titles */
+  --fs-counter: 1.75rem; /* 28: resource counters */
+  --fs-hero: 2.5rem; /* 40: hero ISK/VP */
+  --fs-big: 4rem; /* 64: big-screen table */
+  --fs-huge: 6rem; /* 96: big-screen table */
+  --lh-tight: 1.15;
+  --lh-body: 1.45;
+
+  /* Space and shape */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --gutter: 1rem;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* Layout */
+  --tap: 3rem; /* 48 px controls */
+  --tap-min: 2.75rem; /* 44 px absolute minimum */
+  --header-h: 3.5rem;
+  --strip-h: 2.75rem;
+  --tabbar-h: 4rem;
+  --content-w: 40rem;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Motion: ≤ 200 ms UI feedback, ≤ 500 ms state changes; none under reduced motion */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Stacking */
+  --z-sticky: 10;
+  --z-menu: 30;
+  --z-sheet: 40;
+  --z-popover: 45;
+  --z-feedback: 50;
+
+  /* Where toasts sit; screens with a bottom bar raise it */
+  --bottom-inset: var(--safe-bottom);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Faction scope: any element with data-faction gets --f, --f-text and --f-dim (body carries this device's seat). */
+[data-faction='amarr'] {
+  --f: var(--amarr);
+  --f-text: var(--amarr-text);
+  --f-dim: var(--amarr-dim);
+}
+[data-faction='caldari'] {
+  --f: var(--caldari);
+  --f-text: var(--caldari-text);
+  --f-dim: var(--caldari-dim);
+}
+[data-faction='gallente'] {
+  --f: var(--gallente);
+  --f-text: var(--gallente-text);
+  --f-dim: var(--gallente-dim);
+}
+[data-faction='minmatar'] {
+  --f: var(--minmatar);
+  --f-text: var(--minmatar-text);
+  --f-dim: var(--minmatar-dim);
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg-0);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg-0);
+  color: var(--text-1);
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+h5,
+h6 {
+  font-size: var(--fs-body);
+}
+h1 {
+  font-size: var(--fs-section);
+  line-height: var(--lh-tight);
+}
+h2 {
+  font-size: var(--fs-title);
+  line-height: var(--lh-tight);
+}
+h3 {
+  font-size: var(--fs-body);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+input,
+select,
+textarea {
+  font-size: max(1rem, 16px); /* no iOS zoom on focus */
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+/* ---------- Utilities ---------- */
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  font-size: var(--fs-meta);
+}
+.muted {
+  color: var(--text-2);
+}
+.faint {
+  color: var(--text-3);
+}
+.small {
+  font-size: var(--fs-sm);
+}
+/* An icon + one line of help (e.g. how to take over a seat whose phone died). */
+.hint-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.hint-line > .icon {
+  flex: none;
+  margin-top: 0.1em;
+}
+.f-text {
+  color: var(--f-text);
+}
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.row-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.spacer {
+  flex: 1;
+}
+.truncate {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  padding: 0 var(--sp-4);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.btn:active:not(:disabled, [aria-disabled='true']) {
+  transform: scale(0.98);
+}
+.btn-primary {
+  background: var(--primary-fill);
+  color: var(--on-primary);
+}
+.btn-primary:hover:not(:disabled, [aria-disabled='true']) {
+  background: color-mix(in srgb, var(--primary-fill) 88%, var(--accent));
+}
+.btn-secondary {
+  background: var(--bg-2);
+  border-color: var(--line-strong);
+}
+.btn-secondary:hover:not(:disabled, [aria-disabled='true']) {
+  background: var(--bg-3);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text-1);
+}
+.btn-ghost:hover:not(:disabled, [aria-disabled='true']) {
+  background: var(--bg-2);
+}
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  text-align: left;
+}
+.btn-link:hover {
+  text-decoration: underline;
+}
+.btn-danger {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+.btn-lg {
+  min-height: 3.5rem;
+  font-size: var(--fs-title);
+}
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  background: var(--bg-3);
+  border-color: var(--line);
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+.btn-link:disabled {
+  background: transparent;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-1);
+}
+.icon-btn:hover {
+  background: var(--bg-2);
+}
+.icon-btn:disabled {
+  color: var(--text-3);
+  background: transparent;
+  cursor: not-allowed;
+}
+
+/* ---------- Forms ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.field-label {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-3);
+  color: var(--text-1);
+}
+.input::placeholder {
+  color: var(--text-3);
+}
+.input:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.field-hint {
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--danger);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Surfaces ---------- */
+
+.card {
+  padding: var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+}
+.card-raised {
+  background: var(--bg-2);
+}
+.section-title {
+  color: var(--text-2);
+}
+
+/* Semantic tags: always icon + word */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.15em 0.55em;
+  border-radius: var(--r-pill);
+  background: var(--bg-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.tag-ok {
+  background: var(--ok-dim);
+  color: var(--ok);
+}
+.tag-warn {
+  background: var(--warn-dim);
+  color: var(--warn);
+}
+.tag-danger {
+  background: var(--danger-dim);
+  color: var(--danger);
+}
+.tag-accent {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* ---------- Screen scaffolding ---------- */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+.screen-body {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-w);
+  margin-inline: auto;
+  padding: var(--sp-4) var(--gutter) var(--sp-6);
+}
+.screen-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+  padding: var(--sp-3) var(--gutter) calc(var(--sp-3) + var(--safe-bottom));
+}
+.screen-footer-inner {
+  max-width: var(--content-w);
+  margin-inline: auto;
+}

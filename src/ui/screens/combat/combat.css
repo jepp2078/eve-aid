@@ -1,0 +1,785 @@
+/* The Combat tab (Task 15a): header, step rail, stage panels, the orbit board, ship tokens, fleet assignment, start
+   choices, the sticky action bar and the involved players' banner. Tokens only; see theme.css. */
+
+/* ---------- Screen and layout ---------- */
+
+.combat-screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.cb-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.cb-panel,
+.cb-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+/* Laptop: a wider screen; the stage panel's cards side by side, the board's three orbits as columns below. */
+@media (min-width: 900px) {
+  .combat-screen {
+    max-width: 78rem;
+  }
+  .cb-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    align-items: start;
+  }
+  .cb-status {
+    max-width: var(--content-w);
+  }
+}
+
+/* ---------- Header ---------- */
+
+.cb-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.cb-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  font-size: var(--fs-title);
+}
+.cb-title-verb {
+  color: var(--text-2);
+  font-weight: 400;
+}
+
+/* ---------- Step rail (sticky under the header) ---------- */
+
+.cb-rail {
+  position: sticky;
+  top: var(--app-top-h, 0px);
+  z-index: var(--z-sticky);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'round steps'
+    'line line';
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  margin: 0 calc(-1 * var(--gutter));
+  padding: var(--sp-2) var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-0);
+}
+/* Phones: the six steps take the whole width; the round badge starts the line under them. */
+@media (max-width: 26rem) {
+  .cb-rail {
+    grid-template-areas:
+      'steps steps'
+      'round line';
+  }
+}
+.cb-rail-round {
+  grid-area: round;
+  justify-self: start;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-sm);
+  background: var(--bg-3);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+.cb-rail-steps {
+  display: grid;
+  grid-area: steps;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--sp-2);
+  max-width: 48rem;
+  min-width: 0;
+  list-style: none;
+}
+.cb-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--bg-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+/* The ▸ between two steps sits in the gap. */
+.cb-step + .cb-step::before {
+  position: absolute;
+  left: calc(-1 * var(--sp-2));
+  width: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  text-align: center;
+  content: '▸';
+}
+.cb-step.is-done {
+  background: var(--bg-2);
+}
+/* ✓ as a corner badge, so it takes no width from the label. */
+.cb-step-done {
+  position: absolute;
+  top: calc(-1 * var(--sp-1));
+  right: calc(-1 * var(--sp-1));
+  border-radius: 50%;
+  background: var(--bg-0);
+  color: var(--ok);
+}
+.cb-step.is-current {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 0 1px var(--accent);
+  color: var(--text-1);
+  font-weight: 800;
+}
+.cb-step.is-idle {
+  border-style: dashed;
+  color: var(--text-3);
+  text-decoration: line-through;
+}
+.cb-rail-line {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: line;
+  justify-content: space-between;
+  gap: 0 var(--sp-3);
+  min-width: 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-rail-who {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em;
+}
+
+/* ---------- Status cards and placeholder ---------- */
+
+.cb-status-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.cb-status-title .icon {
+  color: var(--accent);
+}
+.cb-status .placeholder .icon {
+  margin-top: 0.15em;
+}
+
+/* ---------- Sticky action bar (thumb zone, above the tab bar) ---------- */
+
+.cb-footer {
+  position: sticky;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom));
+  z-index: var(--z-sticky);
+  margin: 0 calc(-1 * var(--gutter)) calc(-1 * var(--sp-6));
+  padding: var(--sp-3) var(--gutter);
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+}
+.cb-footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  max-width: var(--content-w);
+  margin-inline: auto;
+}
+.cb-ok {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+}
+.cb-ok .icon {
+  color: var(--ok);
+}
+.cb-picking {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
+  border: 1px solid var(--accent);
+  border-radius: var(--r-md);
+  background: var(--accent-dim);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Breakdowns (ⓘ) ---------- */
+
+.cb-why {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  list-style: none;
+}
+.cb-why .is-mod {
+  color: var(--text-1);
+}
+
+/* ---------- Orbit board ---------- */
+
+.cb-board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+@media (min-width: 900px) {
+  .cb-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+.cb-lane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+  padding: var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+}
+.cb-lane.is-current {
+  border-color: var(--accent);
+  box-shadow: inset 0 3px 0 var(--accent);
+}
+.cb-lane.has-issue {
+  border-color: color-mix(in srgb, var(--danger) 60%, var(--line));
+}
+.cb-lane-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+}
+.cb-lane-head h3 {
+  font-size: var(--fs-title);
+}
+.cb-lane-dice {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-left: var(--sp-2);
+  border-left: 3px solid var(--f);
+}
+.cb-side + .cb-side {
+  margin-top: var(--sp-1);
+  padding-top: var(--sp-2);
+  border-top: 1px dashed var(--line);
+}
+.cb-side-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  min-height: var(--tap-min);
+}
+.cb-side-name {
+  color: var(--f-text);
+  font-weight: 700;
+}
+.cb-side-role {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-pool {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: var(--tap-min);
+  margin-left: auto;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--bg-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.cb-pool .icon {
+  color: var(--accent);
+}
+.cb-pool[aria-expanded='true'] {
+  border-color: var(--accent);
+}
+/* The breakdown under a header row that wraps (lane or side head). */
+.cb-pool-why {
+  flex-basis: 100%;
+}
+.cb-empty {
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+.cb-noleader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-noleader .icon {
+  margin-top: 0.1em;
+  color: var(--text-3);
+}
+.cb-noleader.is-warn {
+  color: var(--text-1);
+}
+.cb-noleader.is-warn .icon {
+  color: var(--warn);
+}
+.cb-tokens {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+}
+.cb-removed {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Ship token ---------- */
+
+.tok {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-1) var(--sp-2) var(--sp-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+}
+.tok.is-leader {
+  border-color: var(--line-strong);
+}
+.tok.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.tok.is-destroyed,
+.tok.is-dimmed {
+  background: var(--bg-1);
+}
+.tok.is-destroyed .tok-name {
+  color: var(--text-2);
+  text-decoration: line-through;
+}
+.tok.is-removed {
+  opacity: 0.6;
+}
+/* Name and tags wrap as needed; the ⓘ button keeps the top-right corner. */
+.tok-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--sp-2);
+  min-width: 0;
+  padding-right: calc(var(--tap-min) + var(--sp-1));
+}
+.tok-name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-1);
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tok-name-btn {
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+}
+.tok-name-btn:hover {
+  text-decoration-color: var(--accent);
+}
+.tok-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+.tok-tags .tag {
+  padding-inline: 0.45em;
+}
+.tok-lead {
+  background: var(--bg-3);
+  color: var(--text-1);
+}
+.tok-lead .icon {
+  color: var(--f);
+}
+.tok-info {
+  position: absolute;
+  top: var(--sp-1);
+  right: var(--sp-1);
+  width: var(--tap-min);
+  height: var(--tap-min);
+  color: var(--accent);
+}
+.tok-info[aria-expanded='true'] {
+  background: var(--accent-dim);
+}
+.tok-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-3);
+  margin: 0;
+  padding-right: var(--sp-2);
+}
+.tok-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+.tok-stat dt {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.tok-stat dd {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  margin: 0;
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+.tok-stat.is-up dd,
+.tok-stat.is-down dd {
+  color: var(--accent);
+}
+.tok-stat.is-up dd span[aria-hidden],
+.tok-stat.is-down dd span[aria-hidden] {
+  font-size: 0.7em;
+}
+.tok-hp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+}
+.tok-pips {
+  display: inline-flex;
+  gap: 2px;
+}
+.tok-pip {
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1px solid var(--text-2);
+  border-radius: 2px;
+}
+.tok-pip.is-hit {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+.tok-why {
+  margin-right: var(--sp-1);
+}
+.tok-reason {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Fleet assignment ---------- */
+
+.cb-tray-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .cb-tray-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  }
+}
+.cb-tray-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+  color: var(--text-1);
+  text-align: left;
+}
+.cb-tray-item:hover:not(:disabled) {
+  background: var(--bg-3);
+}
+.cb-tray-item.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+  background: var(--accent-dim);
+}
+.cb-tray-item.has-issue {
+  border-color: var(--danger);
+}
+.cb-tray-item:disabled {
+  border-color: var(--line);
+  background: var(--bg-1);
+  color: var(--text-2);
+  cursor: default;
+}
+.cb-tray-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+}
+.cb-tray-name {
+  font-weight: 700;
+}
+.cb-tray-left {
+  margin-left: auto;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.cb-tray-item:not(:disabled) .cb-tray-left {
+  color: var(--accent);
+}
+.cb-tray-stats {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-tray-warn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text-1);
+  font-size: var(--fs-sm);
+}
+.cb-tray-warn .icon {
+  color: var(--warn);
+}
+
+.cb-assign-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+@media (min-width: 900px) {
+  .cb-assign-lanes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+.cb-enemy {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-left: 3px solid var(--f);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  background: var(--bg-2);
+  font-size: var(--fs-sm);
+}
+.cb-enemy .faction-glyph {
+  margin-top: 0.15em;
+}
+.cb-enemy-name {
+  color: var(--f-text);
+  font-weight: 700;
+}
+.cb-slots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.cb-slot-title {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+.cb-slot-title .muted {
+  font-weight: 400;
+}
+.cb-placed {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  padding-left: var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+}
+.cb-placed-name {
+  font-weight: 700;
+}
+.cb-placed-meta {
+  flex: 1;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-slot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border: 1px dashed var(--accent);
+  border-radius: var(--r-md);
+  background: var(--accent-dim);
+  color: var(--text-1);
+  font-weight: 600;
+  text-align: left;
+}
+.cb-slot .icon {
+  color: var(--accent);
+}
+
+.cb-slot:hover {
+  border-style: solid;
+}
+.cb-slot-empty {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-3);
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+.cb-slot-blocked {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.cb-slot-blocked .icon {
+  margin-top: 0.2em;
+  color: var(--text-3);
+}
+
+/* ---------- Start choices: curse abilities ---------- */
+
+.cb-abilities {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.cb-ability {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+  color: var(--text-1);
+  text-align: left;
+}
+.cb-ability.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+  background: var(--accent-dim);
+}
+.cb-ability-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.cb-ability-head .icon {
+  margin-left: auto;
+  color: var(--accent);
+}
+.cb-ability-slot {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.cb-ability-text {
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Banner for the two players in a combat (inside the sticky header block) ---------- */
+
+.cb-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.cb-banner.is-urgent {
+  border-bottom-color: color-mix(in srgb, var(--warn) 45%, transparent);
+  background: var(--warn-dim);
+}
+.cb-banner-icon {
+  color: var(--text-2);
+}
+.cb-banner.is-urgent .cb-banner-icon {
+  color: var(--warn);
+}
+.cb-banner-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.3;
+}
+.cb-banner-title {
+  color: var(--f-text);
+  font-weight: 700;
+}
+.cb-banner-detail {
+  color: var(--text-1);
+}
+.cb-banner-btn {
+  flex: none;
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-3);
+}

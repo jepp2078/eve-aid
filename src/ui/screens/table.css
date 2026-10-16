@@ -1,0 +1,754 @@
+/* The Table tab, the action log and the big-screen table (Task 14). Tokens only; see theme.css. */
+
+/* ---------- Phase card ---------- */
+
+.tbl-phase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-2) var(--sp-3) var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+}
+.tbl-phase-title {
+  font-size: var(--fs-section);
+}
+.tbl-turn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  margin-right: var(--sp-2);
+  padding: 0.375rem var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--f-dim);
+  box-shadow: inset 6px 0 0 var(--f);
+}
+.tbl-turn-mark {
+  color: var(--f-text);
+}
+.tbl-turn-title {
+  color: var(--f-text);
+}
+.tbl-turn.is-mine .tbl-turn-title {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tbl-turn-detail {
+  color: var(--text-1);
+  font-size: var(--fs-sm);
+}
+.tbl-waiting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  margin-right: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.tbl-force {
+  align-self: flex-start;
+}
+
+/* ---------- Combat card ---------- */
+
+.tbl-combat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  border: 1px solid color-mix(in srgb, var(--warn) 45%, transparent);
+  border-radius: var(--r-lg);
+  background: var(--warn-dim);
+}
+.tbl-combat-icon {
+  color: var(--warn);
+}
+.tbl-combat-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 12rem;
+}
+.tbl-combat-title {
+  color: var(--warn);
+  font-size: var(--fs-body);
+}
+
+/* ---------- Seat rows ---------- */
+
+.tbl-section-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--sp-2);
+  font-size: var(--fs-title);
+}
+.tbl-section-title .faint {
+  font-weight: 400;
+}
+.tbl-seats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+}
+.tbl-seat {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--f);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+  transition: opacity var(--dur-slow) var(--ease);
+}
+.tbl-seat.is-active {
+  border-color: color-mix(in srgb, var(--f) 55%, var(--line));
+  border-left: 10px solid var(--f);
+  background: var(--f-dim);
+}
+.tbl-seat.is-passed {
+  opacity: 0.6;
+}
+.tbl-seat-btn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3) var(--sp-3);
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-1);
+  text-align: left;
+}
+/* Top line: identity and status tags (which wrap under the name when they don't fit), VP, the disclosure chevron */
+.tbl-seat-top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+.tbl-seat-top > .icon,
+.tbl-seat-top > .faction-glyph {
+  margin-top: 0.4rem;
+}
+.tbl-who {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  min-width: 0;
+  min-height: 2rem;
+}
+.tbl-faction {
+  color: var(--f-text);
+  font-size: var(--fs-title);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.tbl-player {
+  max-width: 100%;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.tbl-vp {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  gap: 0.25rem;
+  min-height: 2rem;
+}
+.tbl-vp-num {
+  font-size: var(--fs-counter);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.tbl-chevron {
+  color: var(--text-2);
+}
+.tbl-unit {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.tbl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.tbl-tag-now {
+  background: var(--f);
+  color: var(--bg-0);
+  letter-spacing: 0.06em;
+}
+/* Second line: ISK, cubes, central, then the board counts (systems, developments, structures) */
+.tbl-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+}
+.tbl-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+}
+.tbl-stat > .icon {
+  align-self: center;
+}
+.tbl-stat-num {
+  font-size: var(--fs-title);
+  font-weight: 700;
+}
+.tbl-counts {
+  display: inline-flex;
+  gap: var(--sp-2);
+  margin-left: auto;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.tbl-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.tbl-count .num {
+  color: var(--text-1);
+}
+/* A light game's counts carry their words (systems, central, done, hidden): they wrap rather than overflow at 360 px */
+.tbl-counts.is-light {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.tbl-detail {
+  padding: 0 var(--sp-3) var(--sp-3);
+}
+.tbl-detail-list {
+  list-style: none;
+}
+.tbl-res {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+.tbl-detail .count-row:last-child {
+  border-bottom: 0;
+}
+
+/* ---------- Log ---------- */
+
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.log-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.log-round {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.log-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+.log-entry {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--line);
+}
+.log-who {
+  display: inline-flex;
+  flex: none;
+  padding-top: 0.15rem;
+  color: var(--text-3);
+}
+.log-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-1);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.log-lines {
+  list-style: none;
+}
+.log-line {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.log-line.is-first {
+  color: var(--text-1);
+  font-size: var(--fs-body);
+}
+.log-notices {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+}
+.log-notice {
+  display: flex;
+  gap: var(--sp-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.log-notice > .icon {
+  margin-top: 0.2em;
+  color: var(--accent);
+}
+.log-notice-to {
+  color: var(--text-1);
+  font-weight: 600;
+}
+.log-entry.is-undone .log-line,
+.log-entry.is-undone .log-notice,
+.log-entry.is-undone .log-notice-to {
+  color: var(--text-3);
+  text-decoration: line-through;
+}
+.log-undo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  margin-top: var(--sp-1);
+}
+.log-undo-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Big-screen table (#/table?big): laptop or TV, sized by the viewport ---------- */
+
+.big {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.6vh, 1.25rem);
+  min-height: 100dvh;
+  padding: clamp(0.75rem, 2.2vh, 1.75rem) clamp(1rem, 2.2vw, 2.5rem);
+}
+.big-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.big-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) clamp(1rem, 2.5vw, 2.5rem);
+  min-width: 0;
+}
+.big-phase {
+  font-size: clamp(1.75rem, 4vh, 2.75rem);
+}
+.big-turn {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2em 0.5em;
+  min-width: 0;
+  padding: 0.3em 0.9em 0.3em 0.75em;
+  border-radius: var(--r-md);
+  background: var(--f-dim);
+  box-shadow: inset 8px 0 0 var(--f);
+  font-size: clamp(1.25rem, 3.2vh, 2.25rem);
+}
+.big-turn-who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+}
+.big-turn-mark,
+.big-turn-name {
+  color: var(--f-text);
+}
+.big-turn-name {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.big-turn-detail {
+  color: var(--text-1);
+}
+.big-exit {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+.big-exit:hover {
+  background: var(--bg-2);
+  color: var(--text-1);
+}
+.big-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  font-size: clamp(1rem, 2.2vh, 1.5rem);
+}
+.big-alerts .verge-title {
+  font-size: 1.1em;
+}
+.big-combat {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid color-mix(in srgb, var(--warn) 45%, transparent);
+  border-radius: var(--r-lg);
+  background: var(--warn-dim);
+}
+.big-combat > .icon {
+  color: var(--warn);
+}
+.big-main {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) clamp(17rem, 26vw, 30rem);
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  min-height: 0;
+}
+.big-seats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  list-style: none;
+}
+/* 1 or 2 seats: wide cards stacked (clockwise from the top); 3 seats: three columns; 4 seats: 2×2 */
+.big[data-seats='1'] .big-seats,
+.big[data-seats='2'] .big-seats {
+  grid-template-columns: minmax(0, 1fr);
+}
+.big[data-seats='3'] .big-seats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+/* Wide cards: the stats sit beside the numbers, a little larger */
+.big[data-seats='1'] .big-body,
+.big[data-seats='2'] .big-body {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+}
+.big[data-seats='1'] .big-stats,
+.big[data-seats='2'] .big-stats {
+  font-size: 1.25em;
+}
+/* 3 seats on a tall screen (a TV): stacked wide cards too; a laptop screen keeps the three columns, since three
+   rows would not leave room for the verge and combat banners */
+@media (min-height: 900px) {
+  .big[data-seats='3'] .big-seats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .big[data-seats='3'] .big-body {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    column-gap: clamp(1.5rem, 4vw, 4rem);
+  }
+  .big[data-seats='3'] .big-stats {
+    font-size: 1.25em;
+  }
+}
+/* Fewer, larger cards: the numbers at the top of their 64–96 px range */
+.big[data-seats='1'] .big-vp-num,
+.big[data-seats='2'] .big-vp-num,
+.big[data-seats='3'] .big-vp-num {
+  font-size: 6rem;
+}
+.big[data-seats='1'] .big-isk,
+.big[data-seats='2'] .big-isk,
+.big[data-seats='3'] .big-isk {
+  font-size: 4rem;
+}
+.big-seat {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.4vh, 1rem);
+  min-width: 0;
+  padding: clamp(0.75rem, 2vh, 1.5rem) clamp(1rem, 1.6vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--f);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+  font-size: clamp(1rem, 2.2vh, 1.5rem);
+  transition: opacity var(--dur-slow) var(--ease);
+}
+.big-seat.is-active {
+  border: 3px solid var(--f);
+  border-left-width: 16px;
+  background: var(--f-dim);
+}
+.big-seat.is-passed {
+  opacity: 0.6;
+}
+.big-seat.is-winner {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.big-seat-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2em 0.5em;
+  min-width: 0;
+  font-size: 1.2em;
+}
+.big-now-mark {
+  color: var(--f-text);
+}
+.big-faction {
+  color: var(--f-text);
+  font-weight: 700;
+}
+.big-player {
+  color: var(--text-2);
+}
+.big-seat .tbl-tags .tag {
+  font-size: 0.85em;
+}
+/* The numbers and stats sit in the middle of the card's free height (tall cards with 2 or 3 seats) */
+.big-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.6vh, 1.25rem);
+}
+.big-nums {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 clamp(1rem, 3vw, 3rem);
+}
+.big-vp,
+.big-isk {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+.big-vp-num {
+  font-size: clamp(4rem, 11vh, 6rem);
+  font-weight: 800;
+  line-height: 1;
+}
+.big-isk {
+  font-size: clamp(2.5rem, 7vh, 4rem);
+}
+.big-isk-num {
+  font-weight: 700;
+  line-height: 1;
+}
+.big-isk > .icon {
+  align-self: center;
+}
+.big-unit {
+  color: var(--text-2);
+  font-size: clamp(1rem, 2.4vh, 1.75rem);
+  font-weight: 600;
+}
+.big-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em 1.25em;
+}
+.big-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+.big-central > .icon {
+  color: var(--accent);
+}
+.big-stock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em 0.9em;
+  list-style: none;
+  font-size: 0.9em;
+}
+.big-stock-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.big-devs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  list-style: none;
+  font-size: 0.85em;
+}
+.big-dev {
+  display: inline-flex;
+  cursor: help;
+  font: inherit;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.2em 0.65em;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--text-1);
+}
+.big-dev > .icon {
+  color: var(--f-text);
+}
+.big-dev.is-tapped {
+  opacity: 0.5;
+}
+.big-dev:hover,
+.big-dev[aria-expanded='true'] {
+  border-color: var(--f);
+  opacity: 1;
+}
+.big .cube-track.is-compact .ct-cube {
+  width: 1em;
+  height: 1em;
+  border-width: 2px;
+}
+.big .cube-track.is-compact .ct-cubes {
+  gap: 0.3em;
+}
+.big-side {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.6vh, 1.25rem);
+  min-width: 0;
+  min-height: 0;
+}
+.big-log {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-height: 0;
+  padding: var(--sp-4);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+}
+.big-log > h2 {
+  font-size: clamp(0.875rem, 1.8vh, 1.125rem);
+}
+.big-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  color: var(--text-2);
+  font-size: clamp(0.95rem, 2vh, 1.3rem);
+  list-style: none;
+}
+.big-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+  overflow-wrap: anywhere;
+}
+.big-line > svg {
+  margin-top: 0.2em;
+}
+.big-line:first-child {
+  color: var(--text-1);
+}
+.big-join {
+  padding: var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+}
+.join-code-corner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  text-align: left;
+}
+.join-code-corner .join-qr {
+  width: clamp(7rem, 17vh, 11rem);
+}
+.join-code-corner .join-code-text {
+  align-items: flex-start;
+  min-width: 0;
+}
+.join-code-corner .join-label {
+  font-size: clamp(0.875rem, 1.8vh, 1.125rem);
+}
+.join-code-corner .join-code-value {
+  font-size: clamp(1.5rem, 4vh, 2.75rem);
+  white-space: nowrap;
+}
+.join-code-corner .join-url {
+  grid-column: 1 / -1;
+  font-size: clamp(0.875rem, 1.8vh, 1.125rem);
+}
+
+/* A narrow screen opening the big table (a phone or tablet): one column that scrolls. */
+@media (max-width: 899px) {
+  .big-main,
+  .big .big-seats {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+  }
+  .big-phase {
+    font-size: var(--fs-section);
+  }
+  .big-turn {
+    font-size: var(--fs-title);
+  }
+}
+
+/* Game code picker when the big table has no game yet */
+.big-pick {
+  width: 100%;
+  max-width: 26rem;
+}
+.big-pick > .icon,
+.big-pick-exit {
+  align-self: center;
+}
+
+/* The force-advance confirmation: the consequence stands out */
+.tbl-force-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.tbl-force-next {
+  color: var(--text-1);
+  font-weight: 600;
+}

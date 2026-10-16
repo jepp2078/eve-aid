@@ -1,0 +1,17 @@
+node_modules/
+dist/
+dist-server/
+dist-cloud/
+dist-worker/
+.wrangler/
+worker/runtime.d.ts
+.eve-data/
+.env
+.env.local
+*.log
+coverage/
+.superpowers/
+.claude/
+
+# Photos of the printed cards are the publisher's art and are not distributed; see the README.
+src/assets/cards/

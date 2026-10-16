@@ -1,0 +1,637 @@
+/* The rules reference: the Reference tab and the rules drawer share these. */
+
+.ref-screen {
+  padding-top: 0;
+}
+.ref {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* ---------- Pinned search bar ---------- */
+
+.ref-bar {
+  position: sticky;
+  top: var(--app-top-h, 0px);
+  z-index: calc(var(--z-sticky) - 1);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-inline: calc(-1 * var(--gutter));
+  padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-0);
+}
+.ref-drawer .ref-bar {
+  top: 0;
+  background: var(--bg-2);
+}
+.ref-search {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+}
+.ref-search-icon {
+  position: absolute;
+  left: var(--sp-3);
+  color: var(--text-3);
+  pointer-events: none;
+}
+.ref-search-input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--tap-min) 0 2.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--bg-3);
+  color: var(--text-1);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ref-search-input::-webkit-search-cancel-button,
+.ref-search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ref-search-input::placeholder {
+  color: var(--text-3);
+}
+.ref-search-input:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.ref-clear {
+  position: absolute;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-2);
+}
+.ref-clear:hover {
+  color: var(--text-1);
+}
+.ref-size {
+  display: flex;
+  flex: none;
+}
+.ref-size-btn {
+  display: grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-1);
+  font-weight: 700;
+  line-height: 1;
+}
+.ref-size-btn:hover:not(:disabled) {
+  background: var(--bg-2);
+}
+.ref-size-btn:disabled {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+.small-a {
+  font-size: 0.875rem;
+}
+.big-a {
+  font-size: 1.1875rem;
+}
+
+/* ---------- Scaled content (A−/A+ redefines the type tokens inside) ---------- */
+
+.ref-scaled {
+  --fs-meta: calc(0.75rem * var(--ref-scale, 1));
+  --fs-sm: calc(0.875rem * var(--ref-scale, 1));
+  --fs-body: calc(1rem * var(--ref-scale, 1));
+  --fs-title: calc(1.125rem * var(--ref-scale, 1));
+  --fs-section: calc(1.375rem * var(--ref-scale, 1));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  font-size: var(--fs-body);
+}
+.ref-drawer .ref-scaled {
+  padding-bottom: var(--sp-4);
+}
+
+/* ---------- Recents and topic chips ---------- */
+
+.ref-recents {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.ref-recents ul {
+  list-style: none;
+}
+.recent-chip {
+  max-width: 16rem;
+}
+.chip-quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-2);
+}
+.kind-chip {
+  display: inline-block;
+  flex: none;
+  padding: 0 0.45em;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+/* ---------- Sections ---------- */
+
+.ref-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding-top: var(--sp-1);
+}
+.ref-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+  line-height: 1.55;
+}
+.ref-content > .ref-section:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+.ref-section-title {
+  font-size: var(--fs-section);
+}
+.ref-sub {
+  margin-top: var(--sp-2);
+  color: var(--text-1);
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+.ref-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-left: 1.25em;
+  list-style: disc;
+}
+.ref-bullets li::marker {
+  color: var(--text-3);
+}
+.ref-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+}
+.ref-steps > li {
+  display: grid;
+  grid-template-columns: 1.75em minmax(0, 1fr);
+  align-items: start;
+  gap: var(--sp-2);
+}
+.ref-num {
+  display: grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  margin-top: 0.05em;
+  border-radius: 50%;
+  background: var(--bg-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+.ref-step-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+.ref-interp > li {
+  padding: var(--sp-3);
+  border: 1px solid color-mix(in srgb, var(--house) 28%, var(--line));
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+}
+.ref-drawer .ref-interp > li {
+  background: var(--bg-1);
+}
+
+/* A jump target is outlined briefly, a little outside its text (no animation under reduced motion). */
+.ref .is-flash {
+  border-radius: var(--r-md);
+  outline: 2px solid transparent;
+  outline-offset: 6px;
+  animation: ref-flash 1.5s var(--ease) 1;
+}
+@keyframes ref-flash {
+  0%,
+  60% {
+    outline-color: var(--accent);
+  }
+}
+/* Reduced motion zeroes the animation: show the outline still for as long as the class stays (~1.5 s). */
+@media (prefers-reduced-motion: reduce) {
+  .ref .is-flash {
+    outline-color: var(--accent);
+  }
+}
+
+/* ---------- Tables (rendered from the data modules) ---------- */
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+.ref-caption {
+  padding-bottom: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  text-align: left;
+  caption-side: top;
+}
+.ref-table th,
+.ref-table td {
+  padding: var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.ref-table th:first-child,
+.ref-table td:first-child {
+  padding-left: 0;
+}
+.ref-table th:last-child,
+.ref-table td:last-child {
+  padding-right: 0;
+}
+.ref-table thead th {
+  border-bottom-color: var(--line-strong);
+  color: var(--text-2);
+  font-weight: 600;
+  vertical-align: bottom;
+}
+.ref-table tbody th {
+  color: var(--text-1);
+  font-weight: 600;
+}
+.ref-table .cell-num {
+  text-align: right;
+}
+.ref-table td.cell-num {
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+.col-num {
+  width: 4.75em;
+}
+.col-bp {
+  width: 3.5em;
+}
+.col-make {
+  width: 40%;
+}
+.th-sub {
+  display: block;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+}
+.goods-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 0.35em;
+  vertical-align: -0.2em;
+}
+.make-cell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.3em;
+}
+.cost-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15em 0.35em;
+  font-weight: 400;
+}
+.cost-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  white-space: nowrap;
+}
+.cost-plus {
+  color: var(--text-3);
+}
+.pay-option {
+  display: block;
+}
+.pay-or {
+  display: block;
+  margin: 0.1em 0;
+  color: var(--text-2);
+  font-style: italic;
+}
+.build-table .group-row th {
+  padding-top: var(--sp-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.build-name {
+  display: block;
+  font-weight: 700;
+}
+.build-needs {
+  display: block;
+  color: var(--text-2);
+  font-weight: 400;
+}
+.build-table .cost-list {
+  margin-top: 0.15em;
+}
+
+/* Action cubes, slots and limits */
+.cubes-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.cube-track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-1);
+  list-style: none;
+}
+.cube-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-2) 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+  font-size: var(--fs-sm);
+  line-height: 1.2;
+  text-align: center;
+}
+.cube-cell.is-paid {
+  border-color: var(--line-strong);
+  background: var(--bg-2);
+}
+.cube-n {
+  color: var(--text-2);
+}
+.cube-cost {
+  font-weight: 700;
+}
+.slot-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.limits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  list-style: none;
+  font-size: var(--fs-sm);
+}
+.limits li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+}
+
+/* Dice faces */
+.dice-view {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+.die-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+}
+.die-faces {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  list-style: none;
+}
+.die-faces li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  line-height: 1.25;
+}
+.dice-note {
+  grid-column: 1 / -1;
+}
+
+/* Costs topic */
+.costs-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+.ref-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.ref-block-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--sp-2);
+}
+.ref-block-title {
+  font-size: var(--fs-section);
+}
+
+/* ---------- Browsers ---------- */
+
+.faction-chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+@media (min-width: 600px) {
+  .faction-chips {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.faction-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-top: 3px solid var(--f);
+  border-radius: var(--r-md);
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+.faction-chip.is-selected {
+  border-color: var(--accent);
+  border-top-color: var(--f);
+  background: var(--f-dim);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.faction-chip.is-selected .faction-chip-name {
+  color: var(--f-text);
+  font-weight: 700;
+}
+.ship-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.ship-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  list-style: none;
+}
+.ship-list > li.is-flash {
+  border-radius: var(--r-lg);
+  outline-offset: 3px;
+}
+.completed-by {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) 0;
+}
+
+/* ---------- Search results ---------- */
+
+.ref-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.ref-count {
+  margin-bottom: calc(-1 * var(--sp-2));
+}
+.ref-result-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-2);
+}
+.ref-result-group > .btn-link {
+  align-self: flex-start;
+}
+.ref-result-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  list-style: none;
+}
+.ref-result {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-1) var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+  color: var(--text-1);
+  text-align: left;
+}
+.ref-result:hover {
+  background: var(--bg-2);
+}
+.ref-result > .kind-chip {
+  margin-top: 0.2em;
+}
+.ref-result-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.ref-result-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.ref-result-snippet {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.ref-result-go {
+  align-self: center;
+  color: var(--text-3);
+}
+.ref-hint {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4) 0;
+}
+
+/* A heading with a rules link beside it (Setup and other screens). */
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
